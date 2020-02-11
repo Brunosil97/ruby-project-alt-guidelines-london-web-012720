@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(version: 2020_02_11_105433) do
 
   create_table "weapons", force: :cascade do |t|
     t.string "name"
-    t.string "catagory"
+    t.string "category"
     t.integer "health"
     t.integer "strength"
     t.integer "defence"
