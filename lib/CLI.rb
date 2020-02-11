@@ -1,8 +1,17 @@
 class CommandLineInterface
     def greet
-        puts "==============================="
-        puts    "Welcome to the Continent"
-        puts "==============================="
+        puts "
+        ████████╗██╗  ██╗███████╗    ██╗    ██╗██╗████████╗ ██████╗██╗  ██╗███████╗██████╗     
+        ╚══██╔══╝██║  ██║██╔════╝    ██║    ██║██║╚══██╔══╝██╔════╝██║  ██║██╔════╝██╔══██╗    
+           ██║   ███████║█████╗      ██║ █╗ ██║██║   ██║   ██║     ███████║█████╗  ██████╔╝    
+           ██║   ██╔══██║██╔══╝      ██║███╗██║██║   ██║   ██║     ██╔══██║██╔══╝  ██╔══██╗    
+           ██║   ██║  ██║███████╗    ╚███╔███╔╝██║   ██║   ╚██████╗██║  ██║███████╗██║  ██║    
+           ╚═╝   ╚═╝  ╚═╝╚══════╝     ╚══╝╚══╝ ╚═╝   ╚═╝    ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝   
+          "
+                                                                                                                              
+                puts "==============================="
+                puts    "Welcome to the Continent"
+                puts "==============================="
     end 
 
     def name
@@ -41,7 +50,9 @@ class CommandLineInterface
                 self.kys
                 menu
             when 5
+                puts "--------------------------------"
                 puts "The Continent awaits your return"
+                puts "--------------------------------"
             else
                 puts "Invalid menu option, please try again"
         end
@@ -73,19 +84,26 @@ class CommandLineInterface
     end
 
     def view_warriors
-        # do stuff
+        ux = User.find(@new_user.id)
+        uw = ux.characters
+        warriors = uw.map{|character| character.name }
+        puts warriors
     end
 
-    def gear_up
-        self.all.map{|weapon| weapon.name }
-        puts "Which weapon would you like to equip?"
-        ans = gets.chomp 
-        ans_weapon = Weapon.find_by(name: ans)
-        new_cw = CharacterWeapon.find_or_create_by(character_id: character.id, weapon_id: ans_weapon.id)
-    end
+    # def gear_up
+    #     self.all.map{|weapon| weapon.name }
+    #     puts "Which weapon would you like to equip?"
+    #     ans = gets.chomp 
+    #     ans_weapon = Weapon.find_by(name: ans)
+    #     new_cw = CharacterWeapon.find_or_create_by(character_id: character.id, weapon_id: ans_weapon.id)
+    # end
 
     def kys
-        Character.all.map{|character| character.name }
+        # ux = User.find(@new_user.id)
+        # uw = ux.characters
+        # warriors = uw.map{|character| character.name }
+        # puts warriors 
+        puts view_warriors
         puts "--------------------------------------------------"
         puts "Please choose the character you would like to kill"
         puts "--------------------------------------------------"
@@ -98,7 +116,7 @@ class CommandLineInterface
         else 
            ans_kys.destroy
             puts "--------------------------------------------------"
-            puts "This character has tripped and fallen off a cliff!"
+            puts "#{ans_kill} has tripped and fallen off a cliff!"
             puts "--------------------------------------------------"
         end 
     end
