@@ -127,6 +127,9 @@ class CommandLineInterface
         new_strength = char.strength + ans_weapon.strength 
         new_defence = char.defence + ans_weapon.defence 
 
+        char = char.update(health: new_health, strength: new_strength, defence: new_defence)
+        
+        
             puts "----------------------------------------------------"
             puts "#{char.name} now has #{new_health} health, #{new_strength} strength and #{new_defence} defence!"
             puts "----------------------------------------------------"
