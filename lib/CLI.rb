@@ -10,11 +10,11 @@ class CommandLineInterface
                        ╚═╝   ╚═╝  ╚═╝╚══════╝     ╚══╝╚══╝ ╚═╝   ╚═╝    ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝   
           "
           system("sleep 1")
-        puts TTY::Box.frame "Welcome to the Continent!", padding: 3, width: 40, top: 10, left: 35, align: :center, style: {
+        puts TTY::Box.frame "WELCOME TO THE CONTINENT!", padding: 0.5, width: 50, top: 10, left: 35, align: :center, style: {
             fg: :red,
             bg: :black,
             border: {
-                fg: :yellow,
+                fg: :red,
                 bg: :black
                     }
                 }
@@ -35,34 +35,22 @@ class CommandLineInterface
     end 
 
     def menu 
-        
-        puts "
-            1. Create a new character 
-            2. View your character Collection
-            3. Gear Up
-            4. End your suffering 
-            5. Exit
-        ".colorize(:yellow)
-            system("sleep 0.8")
-            puts "=================================================="
-            puts "Please select from one of the options above: (1-5)".colorize(:red)
-            puts "=================================================="
-
-        input = gets.chomp.to_i
-        case input 
-            when 1 
+        prompt = TTY::Prompt.new
+        input = prompt.select("What would you like to do?", ['Create A New Character', 'View Your Character Collection', 'Gear Up', 'End Your Suffering', 'Log Out'])
+        case input
+            when 'Create A New Character'
                 self.new_character
                 menu
-            when 2
+            when 'View Your Character Collection'
                 self.view_warriors
                 menu
-            when 3
+            when 'Gear Up'
                 self.gear_up
                 menu
-            when 4
+            when 'End Your Suffering'
                 self.kys
                 menu
-            when 5
+            when 'Log Out'
                 puts "--------------------------------"
                 puts "The Continent awaits your return".colorize(:red)
                 puts "--------------------------------"
@@ -70,7 +58,7 @@ class CommandLineInterface
                 puts "Invalid menu option, please try again"
         end
      end
-
+       
     def new_character
             puts "---------------------------------------"
             puts "Please enter the name of your character".colorize(:yellow)
@@ -110,6 +98,7 @@ class CommandLineInterface
             i += 1
         end 
         puts "-------------------------------------------------------------"    
+
     end
 
     def gear_up
@@ -143,16 +132,14 @@ class CommandLineInterface
                 puts "---------------------------------------"
                 menu
             end 
-        new_health = char.health + ans_weapon.health
-        new_strength = char.strength + ans_weapon.strength 
-        new_defence = char.defence + ans_weapon.defence 
-        nj = CharacterWeapon.new(character_id: char.id, weapon_id: ans_weapon.id)
-        nj
-
-        char.update(health: new_health, strength: new_strength, defence: new_defence)
-            puts "----------------------------------------------------"
-            puts "#{char.name} now has #{new_health} health, #{new_strength} strength and #{new_defence} defence!".colorize(:red)
-            puts "----------------------------------------------------"
+            new_health = (char.health + ans_weapon.health).clamp(0, 1000)
+            new_strength = (char.strength + ans_weapon.strength).clamp(0, 1000)
+            new_defence = (char.defence + ans_weapon.defence).clamp(0, 1000)
+        CharacterWeapon.find_or_create_by(character_id: char.id, weapon_id: ans_weapon.id)
+            char.update(health: new_health, strength: new_strength, defence: new_defence)
+                puts "----------------------------------------------------"
+                puts "#{char.name} now has #{new_health} health, #{new_strength} strength and #{new_defence} defence!".colorize(:red)
+                puts "----------------------------------------------------"
             pid = fork {exec "afplay", "lib/soundfile/level_up.mp3"}
     end
 
