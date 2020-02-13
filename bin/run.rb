@@ -1,6 +1,16 @@
 require_relative '../config/environment'
 cli = CommandLineInterface.new
 
+
+pid = fork {exec "afplay", "lib/soundfile/intro.mp3"}
+
+
+
+
+
+
+
+
 cli.greet
 cli.name
 
