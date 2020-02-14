@@ -81,7 +81,7 @@ class CommandLineInterface
             puts "--------------------------------------------------"
         ans_defence = gets.chomp.to_i.clamp(0,75)
         @new_character = Character.find_or_create_by(name: ans_name, species: ans_species, health: ans_health, strength: ans_strength, defence: ans_defence, user_id: @new_user.id)
-        pid = fork {exec "afplay", "lib/soundfile/character.mp3"}
+        # pid = fork {exec "afplay", "lib/soundfile/character.mp3"}
     end
 
     def view_warriors
@@ -123,7 +123,9 @@ class CommandLineInterface
         end 
             puts "--------------------------------------------"
             puts "Which weapon would you like to equip? (name)".colorize(:red)
-            puts "--------------------------------------------"
+            puts "============================================"
+            puts "Be wary of your health".colorize(:red)
+            puts "----------------------"
         ans = gets.chomp 
         ans_weapon = Weapon.find_by(name: ans)
             if ans_weapon.nil?
@@ -133,14 +135,21 @@ class CommandLineInterface
                 menu
             end 
             new_health = (char.health + ans_weapon.health).clamp(0, 1000)
+            if new_health == 0 
+                char.destroy
+                puts "--------------------------------------------"
+                puts "You have no health and have met your demise!".colorize(:red)
+                puts "--------------------------------------------"
+                menu
+            end 
             new_strength = (char.strength + ans_weapon.strength).clamp(0, 1000)
             new_defence = (char.defence + ans_weapon.defence).clamp(0, 1000)
         CharacterWeapon.find_or_create_by(character_id: char.id, weapon_id: ans_weapon.id)
-            char.update(health: new_health, strength: new_strength, defence: new_defence)
+             char.update(health: new_health, strength: new_strength, defence: new_defence)
                 puts "----------------------------------------------------"
                 puts "#{char.name} now has #{new_health} health, #{new_strength} strength and #{new_defence} defence!".colorize(:red)
                 puts "----------------------------------------------------"
-            pid = fork {exec "afplay", "lib/soundfile/level_up.mp3"}
+            # pid = fork {exec "afplay", "lib/soundfile/level_up.mp3"}
     end
 
     def kys

@@ -10,6 +10,7 @@ w3 = Weapon.find_or_create_by(name: "Chaos", category: "Magic", health: -50, str
 w4 = Weapon.find_or_create_by(name: "Crossbow", category: "Range", health: 25, strength: 0, defence: 25)
 w5 = Weapon.find_or_create_by(name: "Shield", category: "Melee", health: 100, strength: -50, defence: 200)
 w6 = Weapon.find_or_create_by(name: "Portals", category: "Magic", health: 0, strength: 0, defence: 0)
+w7 = Weapon.find_or_create_by(name: "Aerondight", category: "Bladed Melee", health: -100, strength: 200, defence: 200)
 
 
 cw1 = CharacterWeapon.find_or_create_by(character_id: c1.id, weapon_id: w1.id)
